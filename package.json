@@ -1,0 +1,27 @@
+{
+  "name": "asap-design-jeisson-mvp",
+  "version": "1.0.0-demo",
+  "private": true,
+  "description": "ASAP design by Jeisson Steven Herrera Baquero - MVP academico para estudio inteligente de cargas laborales.",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "ASAP_DATA_FILE=./data/db.local.json node server.js",
+    "test": "node --test tests/*.test.js",
+    "reset": "node scripts/reset-data.js"
+  },
+  "engines": {
+    "node": ">=22 <27"
+  },
+  "keywords": [
+    "talento-humano",
+    "cargas-laborales",
+    "asap",
+    "workload",
+    "hrm",
+    "demo"
+  ],
+  "author": "Jeisson Steven Herrera Baquero",
+  "license": "UNLICENSED"
+}

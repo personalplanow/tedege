@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ASAP design by Jeisson Steven Herrera Baquero</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div id="loginView" class="login-shell">
+    <section class="login-card">
+      <div class="brand-lockup">
+        <div class="logo-mark">ASAP</div>
+        <div>
+          <h1>ASAP</h1>
+          <p>design by Jeisson Steven Herrera Baquero</p>
+        </div>
+      </div>
+      <h2>Demo inteligente para estudio de cargas laborales</h2>
+      <p class="muted">Registra actividades, calcula horas mes, estima personal requerido con la regla 167, detecta sobrecarga y genera reportes listos para sustentar.</p>
+      <form id="loginForm" class="form-grid">
+        <label>
+          Correo
+          <input id="email" name="email" type="email" autocomplete="username" value="admin@asap.demo.com" required>
+        </label>
+        <label>
+          Contraseña
+          <input id="password" name="password" type="password" autocomplete="current-password" value="Admin@123" required>
+        </label>
+        <button type="submit" class="primary">Ingresar a la demo</button>
+      </form>
+      <div class="demo-users">
+        <strong>Usuarios demo</strong>
+        <button data-login="admin@asap.demo.com|Admin@123">Admin</button>
+        <button data-login="lider@asap.demo.com|Lider@123">Líder</button>
+        <button data-login="empleado@asap.demo.com|Default@123">Empleado</button>
+        <button data-login="analista@asap.demo.com|Analista@123">Analista</button>
+      </div>
+      <p id="loginError" class="error"></p>
+    </section>
+    <aside class="thesis-panel">
+      <span class="eyebrow">MVP académico</span>
+      <h2>De levantamiento manual a informe inmediato</h2>
+      <p>ASAP organiza el estudio de cargas por actividad, área, periodicidad, repetición y tiempo. La demo muestra cómo convertir el registro operativo en dashboard, alertas, recomendaciones y reporte ejecutivo.</p>
+      <div class="formula-card">
+        <strong>Horas mes = repeticiones × minutos / 60</strong>
+        <span>Funcionarios requeridos = horas mes / 167</span>
+      </div>
+      <ul>
+        <li>Interfaz responsive para computador y celular.</li>
+        <li>Filtros por área, responsable, prioridad, riesgo, estado y mes.</li>
+        <li>Glosario de métricas, tutorial y plantilla de reporte.</li>
+      </ul>
+    </aside>
+  </div>
+
+  <div id="appView" class="app hidden">
+    <aside class="sidebar">
+      <div class="brand-lockup small">
+        <div class="logo-mark">ASAP</div>
+        <div>
+          <h1>ASAP</h1>
+          <p>cargas laborales</p>
+        </div>
+      </div>
+      <nav>
+        <button class="nav active" data-section="dashboard">Inicio</button>
+        <button class="nav" data-section="study">Estudio 167</button>
+        <button class="nav" data-section="tasks">Actividades</button>
+        <button class="nav" data-section="recommendations">Alertas</button>
+        <button class="nav" data-section="reports">Reportes</button>
+        <button class="nav" data-section="guide">Guía y métricas</button>
+        <button class="nav" data-section="profile">Mi perfil</button>
+        <button class="nav admin-only" data-section="audit">Auditoría</button>
+      </nav>
+      <div class="sidebar-footer">
+        <p id="sessionUser"></p>
+        <button id="logoutBtn" class="ghost">Cerrar sesión</button>
+      </div>
+    </aside>
+
+    <main class="content">
+      <header class="topbar">
+        <div>
+          <span class="eyebrow">Plataforma de talento humano</span>
+          <h2 id="pageTitle">Inicio</h2>
+        </div>
+        <div class="top-actions">
+          <button id="refreshBtn" class="ghost">Actualizar</button>
+          <a class="ghost" href="/api/reports/workload.csv" id="csvLink">Exportar CSV</a>
+          <a class="primary" href="/api/reports/workload.html" id="pdfLink" target="_blank" rel="noopener">Vista PDF</a>
+        </div>
+      </header>
+
+      <section id="dashboard" class="section active-section">
+        <article class="hero-feed">
+          <div>
+            <span class="eyebrow">Resumen ejecutivo</span>
+            <h3>Estado actual del estudio de cargas</h3>
+            <p id="dashboardLead" class="muted"></p>
+          </div>
+          <button class="primary" data-section-jump="study">Ver metodología 167</button>
+        </article>
+        <div id="cards" class="cards"></div>
+        <div class="grid two">
+          <article class="panel">
+            <div class="panel-header">
+              <h3>Carga por colaborador</h3>
+              <span class="muted">ICU, horas mes y riesgo</span>
+            </div>
+            <div id="userWorkload"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-header">
+              <h3>Áreas / equipos</h3>
+              <span class="muted">Vista agregada</span>
+            </div>
+            <div id="teamWorkload"></div>
+          </article>
+        </div>
+        <article class="panel space-top">
+          <div class="panel-header">
+            <h3>Actividades de mayor impacto</h3>
+            <span class="muted">Ordenadas por horas mes</span>
+          </div>
+          <div id="criticalTasks" class="mini-feed"></div>
+        </article>
+      </section>
+
+      <section id="study" class="section">
+        <div class="grid two uneven">
+          <article class="panel">
+            <div class="panel-header">
+              <h3>Metodología 167</h3>
+              <span class="badge low">Base demo</span>
+            </div>
+            <p>El estudio se registra tarea a tarea por área. Cada actividad captura periodicidad, repeticiones mensuales y minutos por repetición. El sistema consolida horas mes y calcula el personal requerido dividiendo entre 167.</p>
+            <div id="studySummary" class="study-summary"></div>
+            <div class="formula-strip">
+              <span>Horas mes = repeticiones × minutos / 60</span>
+              <span>Funcionarios = horas mes / 167</span>
+              <span>CP = horas mes × pesos</span>
+            </div>
+          </article>
+          <article class="panel">
+            <div class="panel-header">
+              <h3>Calculadora rápida</h3>
+              <span class="muted">Para explicar en vivo</span>
+            </div>
+            <div class="form-grid compact">
+              <div class="form-row">
+                <label>Repeticiones al mes<input id="calcFrequency" type="number" min="0" value="280"></label>
+                <label>Minutos por repetición<input id="calcMinutes" type="number" min="0" value="20"></label>
+              </div>
+              <div id="quickCalcResult" class="calc-result"></div>
+            </div>
+          </article>
+        </div>
+        <article class="panel space-top">
+          <div class="panel-header">
+            <h3>Resultado por área</h3>
+            <span class="muted">Horas mes y funcionarios requeridos</span>
+          </div>
+          <div id="areaStudy"></div>
+        </article>
+      </section>
+
+      <section id="tasks" class="section">
+        <div class="grid two uneven">
+          <article class="panel">
+            <div class="panel-header">
+              <h3>Actividades registradas</h3>
+              <span id="taskCount" class="muted"></span>
+            </div>
+            <div class="filters advanced-filters">
+              <input id="taskSearch" type="search" placeholder="Buscar actividad, área o responsable">
+              <select id="statusFilter">
+                <option value="">Todos los estados</option>
+                <option value="todo">Pendiente</option>
+                <option value="in_progress">En progreso</option>
+                <option value="review">En revisión</option>
+                <option value="done">Finalizada</option>
+              </select>
+              <select id="teamFilter"><option value="">Todas las áreas</option></select>
+              <select id="assigneeFilter"><option value="">Todos los responsables</option></select>
+              <select id="priorityFilter"><option value="">Todas las prioridades</option><option value="low">Baja</option><option value="medium">Media</option><option value="high">Alta</option><option value="critical">Crítica</option></select>
+              <select id="riskFilter"><option value="">Todos los riesgos</option><option value="low">Bajo</option><option value="medium">Medio</option><option value="high">Alto</option><option value="critical">Crítico</option><option value="closed">Cerrado</option></select>
+              <input id="monthFilter" type="month" aria-label="Filtrar por mes">
+            </div>
+            <div id="taskList" class="task-list"></div>
+          </article>
+          <article class="panel manager-only">
+            <div class="panel-header">
+              <h3>Registrar actividad del estudio</h3>
+              <span class="muted">Frecuencia + tiempo</span>
+            </div>
+            <form id="taskForm" class="form-grid compact">
+              <label>Actividad<input name="title" required placeholder="Ej. Radicar solicitudes recurrentes"></label>
+              <label>Descripción<textarea name="description" rows="3" placeholder="Contexto, producto esperado y criterio de cierre"></textarea></label>
+              <div class="form-row">
+                <label>Área / equipo<select name="teamId" id="teamSelect"></select></label>
+                <label>Habilidad<select name="requiredSkill">
+                  <option value="general">General</option>
+                  <option value="rrhh">RRHH</option>
+                  <option value="analytics">Analítica</option>
+                  <option value="reporting">Reportes</option>
+                  <option value="calendar">Calendario</option>
+                  <option value="wellbeing">Bienestar</option>
+                  <option value="operations">Operaciones</option>
+                </select></label>
+              </div>
+              <div class="form-row">
+                <label>Periodicidad<select name="periodicity"><option value="daily">Diaria</option><option value="weekly" selected>Semanal</option><option value="biweekly">Quincenal</option><option value="monthly">Mensual</option><option value="quarterly">Trimestral</option><option value="eventual">Eventual</option></select></label>
+                <label>Fecha límite<input name="dueDate" type="date" required></label>
+              </div>
+              <div class="form-row">
+                <label>Repeticiones al mes<input name="frequencyPerMonth" type="number" min="0" max="100000" value="20"></label>
+                <label>Minutos por repetición<input name="minutesPerOccurrence" type="number" min="0" max="1440" value="60"></label>
+              </div>
+              <div class="form-row">
+                <label>Horas mes calculadas<input name="estimatedHours" type="number" min="0.1" step="0.01" value="20" required></label>
+                <label>Señal de bienestar<select name="wellbeingSignal"><option value="neutral">Neutral</option><option value="positive">Positiva</option><option value="fatigue">Fatiga</option><option value="stress">Estrés</option></select></label>
+              </div>
+              <div class="form-row">
+                <label>Prioridad<select name="priority"><option value="low">Baja</option><option value="medium" selected>Media</option><option value="high">Alta</option><option value="critical">Crítica</option></select></label>
+                <label>Dificultad<select name="difficulty"><option value="low">Baja</option><option value="medium" selected>Media</option><option value="high">Alta</option></select></label>
+              </div>
+              <label>Responsable opcional<select name="assigneeId" id="assigneeSelect"><option value="">Sugerir automáticamente</option></select></label>
+              <div id="estimatePreview" class="inline-preview"></div>
+              <button type="submit" class="primary">Registrar actividad</button>
+              <p id="taskFormMsg" class="muted"></p>
+            </form>
+          </article>
+        </div>
+      </section>
+
+      <section id="recommendations" class="section">
+        <article class="panel">
+          <div class="panel-header">
+            <h3>Alertas y recomendaciones explicables</h3>
+            <span class="muted">Revisión humana obligatoria</span>
+          </div>
+          <div id="recommendationList" class="recommendation-list"></div>
+        </article>
+      </section>
+
+      <section id="reports" class="section">
+        <div class="grid two uneven">
+          <article class="panel">
+            <h3>Informe ejecutivo precargado</h3>
+            <p>El reporte ya no muestra un checklist interno. Ahora presenta el resumen que necesitas para la sustentación: horas mes, funcionarios requeridos, área, responsables, riesgos, glosario y fórmula 167.</p>
+            <div class="report-actions">
+              <a class="primary" href="/api/reports/workload.csv" data-auth-download>Descargar CSV</a>
+              <a class="ghost" href="/api/reports/workload.html" target="_blank" rel="noopener" data-auth-download>Abrir vista PDF</a>
+            </div>
+          </article>
+          <article class="panel report-preview-card">
+            <div class="panel-header">
+              <h3>Vista previa del informe</h3>
+              <span class="muted">Datos en vivo</span>
+            </div>
+            <div id="reportPreview"></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="guide" class="section">
+        <div class="grid two">
+          <article class="panel">
+            <div class="panel-header"><h3>Tutorial de uso</h3><span class="muted">Demo guiada</span></div>
+            <details open><summary>1. Registrar actividad</summary><p>En Actividades, escribe la tarea, área, periodicidad, repeticiones mensuales y minutos por repetición. El sistema calcula horas mes y funcionarios requeridos.</p></details>
+            <details><summary>2. Revisar dashboard</summary><p>En Inicio y Estudio 167 revisa carga por colaborador, área, riesgo, horas mes y necesidad de personal.</p></details>
+            <details><summary>3. Aplicar recomendación</summary><p>En Alertas, revisa la explicación. Si aplica, acepta la redistribución. La decisión queda en auditoría.</p></details>
+            <details><summary>4. Exportar informe</summary><p>En Reportes descarga CSV o abre la vista PDF para imprimir o guardar desde el navegador.</p></details>
+          </article>
+          <article class="panel">
+            <div class="panel-header"><h3>¿Qué significa cada métrica?</h3><span class="muted">Glosario</span></div>
+            <div id="metricGlossary" class="glossary"></div>
+          </article>
+        </div>
+        <article class="panel space-top">
+          <div class="panel-header"><h3>Hitos de la propuesta que cubre esta demo</h3><span class="muted">MVP académico</span></div>
+          <div class="milestones">
+            <div><strong>Captura</strong><span>Usuarios, equipos, tareas, tiempos, periodicidad y bienestar.</span></div>
+            <div><strong>Analítica</strong><span>CP, ICU, horas mes, riesgo, vencimientos y necesidad 167.</span></div>
+            <div><strong>Interfaz</strong><span>Menús separados, filtros, tarjetas, tutorial y responsive móvil.</span></div>
+            <div><strong>Reportes</strong><span>CSV, vista imprimible para PDF y plantilla ejecutiva.</span></div>
+            <div><strong>Ética</strong><span>Roles, auditoría, explicabilidad y revisión humana.</span></div>
+          </div>
+        </article>
+      </section>
+
+      <section id="profile" class="section">
+        <article class="panel profile-card">
+          <div class="panel-header">
+            <h3>Mi perfil y preferencias</h3>
+            <span class="muted">Privacidad y configuración</span>
+          </div>
+          <div id="profileInfo"></div>
+          <form id="preferencesForm" class="form-grid compact">
+            <label class="check"><input type="checkbox" name="notifications"> Activar notificaciones de tareas y alertas</label>
+            <label class="check"><input type="checkbox" name="googleCalendarConnected"> Simular vínculo con Google Calendar</label>
+            <button type="submit" class="primary">Guardar preferencias</button>
+            <p id="preferencesMsg" class="muted"></p>
+          </form>
+        </article>
+      </section>
+
+      <section id="audit" class="section">
+        <article class="panel">
+          <div class="panel-header">
+            <h3>Bitácora de auditoría</h3>
+            <span class="muted">Accesos, cambios y recomendaciones</span>
+          </div>
+          <div id="auditLog" class="audit-log"></div>
+          <button id="resetDemoBtn" class="danger admin-only">Restaurar datos demo</button>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <template id="emptyTemplate">
+    <div class="empty">No hay datos para mostrar.</div>
+  </template>
+
+  <script src="/app.js"></script>
+</body>
+</html>
